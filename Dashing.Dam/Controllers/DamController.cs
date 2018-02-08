@@ -1,19 +1,20 @@
 ﻿using System;
 using Dashing.Dam.Models;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.Caching;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Dropbox.Api;
-
+using Dropbox.Api.Files;
 
 
 namespace Dashing.Dam.Controllers
 {
     public class DamController : ApiController
     {
-        List<Folder> folders = new List<Folder>();
+       
 
         [HttpGet]
         public IHttpActionResult GetFolders(
@@ -31,28 +32,58 @@ namespace Dashing.Dam.Controllers
             //}
             //else
             //{
-            BuildFolderStructure(token, rootFolderPath);
+            var result = BuildFolderStructure(token, rootFolderPath);
             //MemoryCache.Default.Add(token + rootFolderPath, folders, DateTimeOffset.UtcNow.AddHours(5));
-            return Ok(folders);
+            return Ok(result);
             //}
 
         }
-
-
-        private void BuildFolderStructure(string token,string folderName,string parentId = "#")
+        [HttpDelete]
+        public IHttpActionResult DeleteFolder(
+            string token = "lpGPoFMIcGAAAAAAAAAAEqsb7NxYp_GcmMt2ED09HFIoupHrdw9qMz1HJ0qoa7Id",
+            string folderPath = "/Red Rooster")
         {
+            DeleteResult result = null;
+            try
+            {
+                using (var dbx = new DropboxClient(token))
+                {
+                    result = dbx.Files.DeleteV2Async(folderPath).Result;
+
+                }
+
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest();
+            }
+          
+
+            
+        }
+
+        private List<Folder> BuildFolderStructure(string token,string folderName)
+        {
+            List<Folder> folders = null;
             if (!string.IsNullOrEmpty(folderName))
             {
                 using (var dbx = new DropboxClient(token))
                 {
-                    var topLevelFolders = dbx.Files.ListFolderAsync(folderName).Result;
-                    foreach (var entry in topLevelFolders.Entries.Where(folder => folder.IsFolder))
-                    {
-                        folders.Add(new Folder(){Id = entry.AsFolder.Id,Parent = parentId, Text = entry.AsFolder.Name});
-                        BuildFolderStructure(token,entry.PathDisplay,entry.AsFolder.Id);
-                    }
+                    //var test  = dbx.Files.ListFolderAsync(folderName,true).Result.Entries;
+                    folders = dbx.Files.ListFolderAsync(folderName,true).Result.Entries
+                        .Where(f=>f.IsFolder==true)
+                        .Select(entry =>new Folder()
+                            {
+                                Id = entry.PathLower,
+                                Parent = Path.GetDirectoryName(entry.PathLower)==@"\"?"#": Path.GetDirectoryName(entry.PathLower).Replace(@"\","/"),
+                                Text = entry.AsFolder.Name
+                            })
+                        .ToList();
                 }
             }
+
+            return folders;
         }
     }
 }
