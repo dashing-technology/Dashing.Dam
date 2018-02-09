@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dashing.Dam", "Dashing.Dam\Dashing.Dam.csproj", "{7D187C1A-B994-4D73-A6CB-B5F2937D04DF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAM User Control", "DAM User Control\DAM User Control.csproj", "{74C5B024-42F6-47A1-BE23-748CAA1B72D4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{7D187C1A-B994-4D73-A6CB-B5F2937D04DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7D187C1A-B994-4D73-A6CB-B5F2937D04DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7D187C1A-B994-4D73-A6CB-B5F2937D04DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74C5B024-42F6-47A1-BE23-748CAA1B72D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74C5B024-42F6-47A1-BE23-748CAA1B72D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74C5B024-42F6-47A1-BE23-748CAA1B72D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74C5B024-42F6-47A1-BE23-748CAA1B72D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
