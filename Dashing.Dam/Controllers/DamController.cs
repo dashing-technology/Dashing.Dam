@@ -56,7 +56,7 @@ namespace Dashing.Dam.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest();
+                return BadRequest(e.Message);
             }
 
         }
@@ -79,13 +79,29 @@ namespace Dashing.Dam.Controllers
             {
                 return BadRequest(e.Message);
             }
-           
-
-            
-            //}
-
         }
 
+        [HttpPost]
+        [Route("CreateFolder")]
+        public IHttpActionResult CreateFolder(
+            string folderFullPath, string token = "lpGPoFMIcGAAAAAAAAAAEqsb7NxYp_GcmMt2ED09HFIoupHrdw9qMz1HJ0qoa7Id")
+        {
+            try
+            {
+                //var ca = db.tblTags;
+                using (var dbx = new DropboxClient(token))
+                {
+                   var result= dbx.Files.CreateFolderV2Async(folderFullPath).Result;
+                    
+
+                }
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
 
         private List<Folder> BuildFolderStructure(string token,string folderName)
         {
