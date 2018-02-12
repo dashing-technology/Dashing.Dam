@@ -58,10 +58,34 @@ namespace Dashing.Dam.Controllers
             {
                 return BadRequest();
             }
-          
+
+        }
+
+        [HttpPost]
+        public IHttpActionResult RenameFolder(
+            string folderFrom, string folderTo, string token = "lpGPoFMIcGAAAAAAAAAAEqsb7NxYp_GcmMt2ED09HFIoupHrdw9qMz1HJ0qoa7Id")
+        {
+            try
+            {
+                //var ca = db.tblTags;
+                using (var dbx = new DropboxClient(token))
+                {
+                    var result = dbx.Files.MoveV2Async(folderFrom, folderTo).Result;
+
+                }
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+           
 
             
+            //}
+
         }
+
 
         private List<Folder> BuildFolderStructure(string token,string folderName)
         {
