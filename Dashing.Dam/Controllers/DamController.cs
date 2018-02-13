@@ -125,5 +125,51 @@ namespace Dashing.Dam.Controllers
 
             return folders;
         }
+        [HttpGet]
+        [Route("GetFiles")]
+        public List<Models.File> GetFiles(string token, string folderPath)
+        {
+            List<Models.File> files = null;
+            List<Models.File> fileMetadata = null;
+
+            if (!string.IsNullOrEmpty(folderPath))
+            {
+
+                using (var dbx = new DropboxClient(token))
+                {
+                    // var test = dbx.Files.GetThumbnailAsync(folderPath).Result;
+                    files = dbx.Files.ListFolderAsync(folderPath).Result.Entries
+                        .Where(f => f.IsFile == true)
+                        .Select(entry => new Models.File()
+                        {
+                            Name = entry.Name,
+                            Size = entry.AsFile.Size,
+                            Type = entry.Name.Substring(entry.Name.Length - 3)
+
+
+                        })
+                        .ToList();
+                }
+            }
+            // foreach (var file in files)
+            //{
+            //    using (var dbx = new DropboxClient(token))
+            //    {
+            //        var thumb = dbx.Files.GetThumbnailAsync(folderPath + "/" + file.Name).Result.Response.AsFile;
+            //            //files.ty
+
+            //            //.Where(f => f.IsFile == true)
+            //            //.Select(entry => new Models.File()
+            //            //{
+            //            //    Name = entry.Name,
+            //            //    Size = entry.AsFile.Size,
+            //            //})
+            //            //.ToList();
+            //    }
+            //}
+            return files;
+
+
+        }
     }
 }
