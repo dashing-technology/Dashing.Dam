@@ -72,10 +72,14 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="images\sort_asc.png" />
+    <Content Include="images\sort_both.png" />
     <Content Include="jquery.nailthumb.less" />
     <Content Include="eWayUG.docx" />
     <None Include="packages.config" />
+    <Content Include="TestProxy.aspx" />
     <Content Include="Training.pdf" />
+    <Content Include="test.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -107,6 +111,13 @@
     </Compile>
     <Compile Include="DropboxFiles.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestProxy.aspx.cs">
+      <DependentUpon>TestProxy.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TestProxy.aspx.designer.cs">
+      <DependentUpon>TestProxy.aspx</DependentUpon>
+    </Compile>
     <Compile Include="WebForm1.aspx.cs">
       <DependentUpon>WebForm1.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
