@@ -145,17 +145,15 @@ namespace Dashing.Dam.Controllers
 
             return folders;
         }
+        [Route("api/Dam/GetFiles")]
         [HttpGet]
         [Route("api/Dam/GetFiles")]
         public List<Models.File> GetFiles(string token, string folderPath)
         {
             List<Models.File> files = null;
-            List<Models.File> fileMetadata = null;
-
-            if (!string.IsNullOrEmpty(folderPath))
+           if (!string.IsNullOrEmpty(folderPath))
             {
-
-                using (var dbx = new DropboxClient(token))
+               using (var dbx = new DropboxClient(token))
                 {
                     // var test = dbx.Files.GetThumbnailAsync(folderPath).Result;
                     files = dbx.Files.ListFolderAsync(folderPath).Result.Entries
@@ -171,25 +169,16 @@ namespace Dashing.Dam.Controllers
                         .ToList();
                 }
             }
-            // foreach (var file in files)
-            //{
-            //    using (var dbx = new DropboxClient(token))
-            //    {
-            //        var thumb = dbx.Files.GetThumbnailAsync(folderPath + "/" + file.Name).Result.Response.AsFile;
-            //            //files.ty
+           return files;
+        }
 
-            //            //.Where(f => f.IsFile == true)
-            //            //.Select(entry => new Models.File()
-            //            //{
-            //            //    Name = entry.Name,
-            //            //    Size = entry.AsFile.Size,
-            //            //})
-            //            //.ToList();
-            //    }
-            //}
-            return files;
-
-
+        [HttpGet]
+        [Route("api/Dam/GetFiles")]
+        public IHttpActionResult GetFiles(string token = "lpGPoFMIcGAAAAAAAAAAEqsb7NxYp_GcmMt2ED09HFIoupHrdw9qMz1HJ0qoa7Id",
+            string folderPath = "/Red Rooster/Smitha")
+        {
+            List<Models.File> result = GetFilesByFolder(token, folderPath);
+            return Ok(result);
         }
     }
 }

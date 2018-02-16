@@ -1,0 +1,356 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="ThemedPage.master.cs" Inherits="uStore.PageLayout.ThemedPage" %>
+<%@ Import Namespace="System.EnterpriseServices" %>
+<%@ Register TagPrefix="uStore" TagName="MetaTags" Src="~/UControls/MetaTags.ascx" %>
+<%@ Register TagPrefix="uStore" TagName="WebEnhancerButton" Src="~/UControls/WebEnhancerButton.ascx" %>
+
+<!doctype html>
+<html>
+<head>
+    <uStore:MetaTags ID="MetaTags" runat="server" />
+    <link href="<%= DefaultStylePath %>" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="<%= StoreStyle %>" type="text/css" />
+    <link rel="stylesheet" href="<%= StoreStylePath %>RadSkins/Default/Grid.Default.css" type="text/css" />    
+    <link rel="stylesheet" href="<%= StoreStylePath %>RadSkins/Default/TreeView.Default.css" type="text/css" />    
+    <link rel="stylesheet" href="<%= StoreStylePath %>RadSkins/Default/Calendar.Default.css" type="text/css" /> 
+    <link rel="stylesheet" href="<%= StoreStylePath %>RadSkins/Default/Menu.Default.css" type="text/css" /> 
+    <link rel="stylesheet" href="<%= StorejQueryStyle %>" type="text/css" />
+    <link rel="stylesheet" href="<%= StoreStylePath %>jsTree/themes/default/style.min.css" />
+    <link rel="stylesheet" href="<%= StoreStylePath %>jsTree/themes/default/custom-style.css" /> 
+
+ 
+
+    <asp:ContentPlaceHolder ID="cphHtmlHeader" runat="server"></asp:ContentPlaceHolder>    
+    
+</head>
+<body>
+
+<script runat="server" language="c#">
+
+   
+
+    public bool IsDam
+    {
+        get { return HttpContext.Current.Request.FilePath.Contains("/uStore/Home") && !string.IsNullOrEmpty(Request["DAM"]) && Request["DAM"].ToLower() == "true";}
+    }
+
+
+</script>
+    <asp:PlaceHolder ID="plhWaitingDiv" runat="server"></asp:PlaceHolder>
+    <script type="text/javascript" src="<%= ScriptsPath %>" ></script>
+
+    <form id="form1" runat="server">
+        <asp:ScriptManager ID="scriptManager" runat="server" EnablePageMethods="true"></asp:ScriptManager>
+		<uStore:WebEnhancerButton ID="WebEnhancerButton" runat="server"/>
+		<div id="fullpage" class="ThemedPageMaster">
+            <div id="logo"></div>
+
+            <asp:ContentPlaceHolder ID="cphStandardHeader" runat="server"></asp:ContentPlaceHolder>
+
+            <asp:ContentPlaceHolder ID="cphWelcome" runat="server"></asp:ContentPlaceHolder>
+
+            <asp:ContentPlaceHolder ID="cphFlags" runat="server" ></asp:ContentPlaceHolder>
+
+            <asp:ContentPlaceHolder ID="cphCurrency" runat="server"></asp:ContentPlaceHolder>
+
+            <asp:ContentPlaceHolder ID="cphCustomHeader" runat="server"></asp:ContentPlaceHolder>
+
+            <div id="searcharea">
+                <div class="subtitle">
+                    <%= PageSubTitle %>
+                </div>
+                <asp:ContentPlaceHolder ID="cphProductSearch" runat="server"></asp:ContentPlaceHolder>
+            </div>
+
+            <!-- Body Area Start -->
+            <div id="bodyarea">
+              
+                <div id="navArea" style="display: none">
+                    <!-- Navigation Area Start -->
+                    <asp:ContentPlaceHolder ID="cphProductGroups" runat="server"></asp:ContentPlaceHolder>
+                </div>
+                <div id="navArea">
+                    <!-- Navigation Area Start -->
+                   <%-- <h1>Hello Navigation Area</h1>--%>
+                    <%
+
+                        if (IsDam)
+                        {
+                            %>
+                        <div id="jstree">
+                           
+                        </div>   
+                            <%
+                        }
+
+                        else
+                        {
+                            %>
+                        <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server"></asp:ContentPlaceHolder>
+                        <%
+                        }
+                    
+                    %>
+                  
+
+                </div>
+                <div id="contentArea" >
+
+                    <!-- Content Area Start -->
+                    <div id="content">
+                        <div class="mainarea">
+                   <%
+
+                        if (IsDam)
+                        {
+                            %>
+ 
+  
+                         <button id="testContent" onclick="populateData();" >Click me to test the content</button>
+                            <table id="example">
+      				<thead>
+          				<tr>
+              					<th>Thumbnail</th>
+              					<th>Name</th>
+             					<th>Size</th>
+             					<th>Type</th>
+              					<th></th>
+               					<th></th>
+               					<th></th>
+
+          				</tr>
+      				</thead>
+			     </table>
+
+
+                            <%
+                        }
+
+                        else
+                        {
+                            %>
+                         <span><asp:ContentPlaceHolder ID="cphMainContent" runat="server"></asp:ContentPlaceHolder></span>
+                        <%
+                        }
+                    
+                    %>
+                            <%--<span><asp:ContentPlaceHolder ID="cphMainContent" runat="server"></asp:ContentPlaceHolder></span>--%>
+                           <%--<h1>Hello content main area</h1>--%>
+                        </div>
+                       
+                        <div class="mainAreaFooter">
+                            <asp:ContentPlaceHolder ID="cphMainContentFooter" runat="server"></asp:ContentPlaceHolder>
+                        </div>
+                    </div>
+                </div>            
+            </div>
+
+            <!-- Footer Area Start -->            
+            <div id="masterPageFooter" class="clearfloat"></div>            
+            <asp:ContentPlaceHolder ID="cphCustomFooter" runat="server"></asp:ContentPlaceHolder>            
+            <div id="postFooter"></div>
+        </div>
+    </form>
+
+<%
+    Session["DbxToken"] = "lpGPoFMIcGAAAAAAAAAAEqsb7NxYp_GcmMt2ED09HFIoupHrdw9qMz1HJ0qoa7Id";
+%>
+<script src="<%= StoreStylePath %>jsTree/jstree.min.js"></script>
+<script type="text/javascript" src="<%= StoreStylePath %>jQueryDataTable/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" href="<%= StoreStylePath %>jQueryDataTable/jquery.dataTables.min.css" />
+<script>
+    var jsonFilesdata;
+    $(document).ready(function () {
+		var folderPath = "/Red Rooster/Smitha";
+                //getFiles(folderPath);
+
+        jsonFilesdata = [
+                    {
+                        "name": "dahing group ACR account.PNG",
+                        "size": 19052,
+                        "type": "PNG"
+                    },
+                    {
+                        "name": "port forwarding all.PNG",
+                        "size": 154054,
+                        "type": "PNG"
+                    },
+                    {
+                        "name": "getting started with AKS.PNG",
+                        "size": 796799,
+                        "type": "PNG"
+                    },
+                
+                ];
+                function getFiles(folderPath) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/TestProxy.aspx/GetFiles",
+                        data: "{'folderPath':'" + folderPath + "'}",
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+
+                        success: function (data) {
+                           
+                            console.log(data);
+                            jsonFilesdata= JSON.parse(data.d);
+                         
+                        },
+                        error: function () {
+
+                        },
+                        async: true
+
+                    })
+                }
+     
+        	
+        
+
+        var jsondata = [
+                { "id": "ajson1", "parent": "#", "text": "Simple root node" },
+                { "id": "ajson2", "parent": "#", "text": "Root node 2" },
+                { "id": "ajson3", "parent": "ajson2", "text": "Child 1" },
+                { "id": "ajson4", "parent": "ajson2", "text": "Child 2" },
+            ];
+        
+        $('#jstree').jstree({
+            'core': {
+                "multiple": false,
+                "check_callback": true,
+                strings: {
+                    'New node': 'New Folder'
+                },
+                data: jsondata
+            },
+            'plugins': ["contextmenu", "dnd", "search", "state", "types", "unique"],
+            contextmenu: { items: context_menu }
+        });
+        var isCreateEdit = false;
+        var tree = $('#jstree').jstree(true);
+        function context_menu(node) {
+            var items = {
+                "Create": {
+                    "separator_before": false,
+                    "separator_after": false,
+                    "label": "Create",
+                    "action": function (obj) {
+                        var $node = tree.create_node(node);
+                        isCreateEdit = true;
+                        tree.edit($node);
+                    }
+                },
+                "Rename": {
+                    "separator_before": false,
+                    "separator_after": false,
+                    "label": "Rename",
+                    "action": function (obj) {
+                       // console.log(node);
+                        tree.edit(node, null, function () {
+
+                            //node.original.id
+                            //node.original.parent
+                            tree.set_id(node, 'new node id');
+
+                            console.log(node);
+                        });
+                    }
+                },
+                "Delete": {
+                    "separator_before": true,
+                    "separator_after": false,
+                    "label": "Delete",
+                    "action": function (obj) {
+                        if (confirm('Are you sure to delete this folder?')) {
+                            //node.original.id
+                            deleteFolder(node.original.id);
+                            tree.delete_node(node);
+                        }
+                    }
+                }
+            };
+            return items;
+        }
+
+        function deleteFolder(folderPath) {
+            $.ajax({
+                type: "POST",
+                url: "<%= StoreStylePath %>/DAMProxy.aspx/DeleteFolder",
+                data: "{'folderPath':'" + folderPath + "'}",
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {                  
+                },
+                async: true
+
+            });
+        }
+    });
+    $("#testContent").click(function () {
+        $("#example").show();
+        return false;
+    });
+    function populateData() {
+        $("#example").dataTable(
+            {
+                destroy: true,
+                "data": jsonFilesdata,
+                "aoColumnDefs": [
+                    {
+                        "sTitle": "Thumbnail",
+                        "aTargets": [0],
+                        "bSortable": false,
+
+
+                        "mRender": function () {
+                            return 'hi';
+                        }
+                    },
+                    {
+                        "data": "name",
+                        "aTargets": [1]
+                    },
+                    {
+                        "data": "size",
+                        "aTargets": [2]
+                    },
+                    {
+                        "data": "type",
+                        "aTargets": [3]
+                    },
+                    {
+                        "sTitle": "",
+                        "aTargets": [4],
+                        "sType": "string",
+                        "bSortable": false,
+
+                        "mRender": function () {
+                            return '<a href="http://www.google.com">View</a>';
+                        }
+                    },
+                    {
+                        "sTitle": "",
+                        "aTargets": [5],
+                        "sType": "string",
+                        "bSortable": false,
+
+                        "mRender": function () {
+                            return '<a href="http://www.google.com">Delete</a>';
+                        }
+                    },
+                    {
+                        "sTitle": "",
+                        "aTargets": [6],
+                        "sType": "string",
+                        "bSortable": false,
+
+                        "mRender": function () {
+                            return '<a href="http://www.google.com">Download</a>';
+                        }
+                    }
+
+                ]
+            });
+    }
+</script>
+</body>
+</html>
