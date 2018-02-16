@@ -80,9 +80,29 @@ namespace Dashing.Dam.Controllers
                 return BadRequest(e.Message);
             }
         }
+        [HttpPost]
+        [Route("api/Dam/MoveFolder")]
+        public IHttpActionResult MoveFolder(
+            string folderFrom, string folderTo, string token = "lpGPoFMIcGAAAAAAAAAAEqsb7NxYp_GcmMt2ED09HFIoupHrdw9qMz1HJ0qoa7Id")
+        {
+            try
+            {
+                //var ca = db.tblTags;
+                using (var dbx = new DropboxClient(token))
+                {
+                    var result = dbx.Files.MoveV2Async(folderFrom, folderTo).Result;
+
+                }
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
 
         [HttpPost]
-        [Route("CreateFolder")]
+        [Route("api/Dam/CreateFolder")]
         public IHttpActionResult CreateFolder(
             string folderFullPath, string token = "lpGPoFMIcGAAAAAAAAAAEqsb7NxYp_GcmMt2ED09HFIoupHrdw9qMz1HJ0qoa7Id")
         {
@@ -126,7 +146,7 @@ namespace Dashing.Dam.Controllers
             return folders;
         }
         [HttpGet]
-        [Route("GetFiles")]
+        [Route("api/Dam/GetFiles")]
         public List<Models.File> GetFiles(string token, string folderPath)
         {
             List<Models.File> files = null;
