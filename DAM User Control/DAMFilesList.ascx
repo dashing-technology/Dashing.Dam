@@ -46,10 +46,11 @@
                       "sTitle": "File Size",
                       "aTargets": [2],
                       "sType": "string",
-                      "sWidth": "40px"
-                      //"mRender": function () {
-                      //    return "F Size";
-                      //}
+                      "sWidth": "40px",
+                      "data":"size",
+                      "mRender": function (data) {
+                          return data+" MB";
+                      }
                   },
                   {
                       "sTitle": "Asset Type",

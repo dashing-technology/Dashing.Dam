@@ -32,36 +32,7 @@
         return result;
     }
 
-    /*
-        [WebMethod]
-        public static string DeleteFolder(string folderPath)
-        {
-            var token = HttpContext.Current.Session["DbxToken"];
-            string result = "";
-            if (token != null)
-            {
-                try
-                {
-                    WebClient client = new WebClient();
-                    string apiUrl = string.Format("DeleteFolder?token={0}&folderPath={1}", token, folderPath);
-
-                    //client.Headers["Content-Type"] = "application/json";
-                    client.Headers.Add("Accept:application/json");
-                    var values = new NameValueCollection();
-                    values.Add("token", token.ToString());
-                    values.Add("folderPath", folderPath);
-                    client.UploadValues(BaseDamUrl + apiUrl, "DELETE",values);
-                    result = "Success";
-                }
-                catch (Exception e)
-                {
-                    result = e.Message;
-                }
-
-            }
-            return result;
-        }
-    */
+   
     [WebMethod]
     public static string GetFiles(string folderPath)
     {
@@ -81,6 +52,37 @@
                 client.Headers.Add("Content-Type:application/json");
                 result=client.DownloadString(BaseDamUrl+apiUrl);
                 //result = "Success";
+            }
+            catch (Exception e)
+            {
+                result = e.Message;
+            }
+
+        }
+        return result;
+    }
+     [WebMethod]
+    public static string Delete(string folderPath)
+    {
+        if (folderPath.Trim().ToLower() == RootFolder.Trim().ToLower())
+        {
+            return "Can not delete roo folder: " + RootFolder;
+        }
+        var token = HttpContext.Current.Session["DbxToken"];
+        string result = "";
+        if (token != null)
+        {
+            try
+            {
+                WebClient client = new WebClient();
+                string apiUrl = string.Format("Delete?token={0}&path={1}", token, folderPath);
+                //client.Headers["Content-Type"] = "application/json";
+                client.Headers.Add("Accept:application/json");
+                var values = new NameValueCollection();
+                values.Add("token", token.ToString());
+                values.Add("path", folderPath);
+                client.UploadValues(BaseDamUrl + apiUrl, "DELETE",values);
+                result = "Success";
             }
             catch (Exception e)
             {

@@ -39,16 +39,16 @@ namespace Dashing.Dam.Controllers
 
         }
         [HttpDelete]
-        public IHttpActionResult DeleteFolder(
+        public IHttpActionResult Delete(
             string token = "lpGPoFMIcGAAAAAAAAAAEqsb7NxYp_GcmMt2ED09HFIoupHrdw9qMz1HJ0qoa7Id",
-            string folderPath = "/Red Rooster")
+            string path = "/Red Rooster")
         {
             DeleteResult result = null;
             try
             {
                 using (var dbx = new DropboxClient(token))
                 {
-                    result = dbx.Files.DeleteV2Async(folderPath).Result;
+                    result = dbx.Files.DeleteV2Async(path).Result;
 
                 }
 
@@ -113,23 +113,30 @@ namespace Dashing.Dam.Controllers
         private List<Models.File> GetFilesByFolder(string token, string folderPath)
         {
             List<Models.File> files = null;
-           if (!string.IsNullOrEmpty(folderPath))
-            {
-               using (var dbx = new DropboxClient(token))
+             if (!string.IsNullOrEmpty(folderPath))
+             {
+                using (var dbx = new DropboxClient(token))
                 {
-                    // var test = dbx.Files.GetThumbnailAsync(folderPath).Result;
+                    var format = new ThumbnailFormat();
+                    var size = new ThumbnailSize();
                     files = dbx.Files.ListFolderAsync(folderPath).Result.Entries
                         .Where(f => f.IsFile == true)
                         .Select(entry => new Models.File()
                         {
                             Name = entry.Name,
-                            Size = entry.AsFile.Size,
-                            Type = entry.Name.Substring(entry.Name.Length - 3)
+                            Size = Decimal.Round(Convert.ToDecimal((entry.AsFile.Size / 1024f) / 1024f),2),
+                            Type = entry.Name.Substring(entry.Name.Length - 3),
+                            Id = entry.AsFile.Id,
+                            FilePath = entry.AsFile.PathLower,
+                            Thumbnail= Convert.ToBase64String(dbx.Files.GetThumbnailAsync(folderPath+"/"+entry.Name, format.AsJpeg, size.AsW64h64).Result.GetContentAsByteArrayAsync().Result)
 
 
-                        })
-                        .ToList();
+                })
+                .ToList();
+               
+
                 }
+
             }
            return files;
         }

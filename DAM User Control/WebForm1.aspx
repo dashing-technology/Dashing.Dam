@@ -67,11 +67,12 @@
                             "data": jsondata,
                             "aoColumnDefs": [
                                 {
-                                    "sTitle": "Thumbnail",
+                                   
                                     "aTargets": [0],
                                     "bSortable": false,
-                                    "mRender": function () {
-                                        return '<img src="/Red.jpg"/>';
+                                    "data":"thumbnail",
+                                    "mRender": function (data) {
+                                        return '<img src="data:image/jpeg;base64,'+data+'"/>';
                                     }
                                 },
                                 {
@@ -80,7 +81,10 @@
                                 },
                                 {
                                     "data": "size",
-                                    "aTargets": [2]
+                                    "aTargets": [2],
+                                    "mRender": function (data) {
+                                        return data + " MB";
+                                    }
                                 },
                                 {
                                     "data": "type",
@@ -91,24 +95,16 @@
                                     "aTargets": [4],
                                     "sType": "string",
                                     "bSortable": false,
-                                   
-                                    "mRender": function () {
-                                        return '<a href="http://www.google.com">View</a>';
+                                    "data": "name",
+                                    
+                                    "mRender": function (data) {
+                                        return '<a href="#" onclick="confirmationDelete(\'' +data+''\);">Del</a>';
                                     }
                                 },
+                                
                                 {
                                     "sTitle": "",
                                     "aTargets": [5],
-                                    "sType": "string",
-                                    "bSortable": false,
-
-                                    "mRender": function () {
-                                        return '<a href="http://www.google.com">Delete</a>';
-                                    }
-                                },
-                                {
-                                    "sTitle": "",
-                                    "aTargets": [6],
                                     "sType": "string",
                                     "bSortable": false,
 
@@ -120,6 +116,25 @@
                                 ]
                         });
             }
+            function confirmationDelete(datas)
+            {
+                alert(datas);
+                //if (confirm("Are you sure you want to delete this file?));
+            }
+
+            function deleteFile(filePath) {
+                $.ajax({
+                    type: "POST",
+                    url: "/TestProxy.aspx/Delete",
+                    data: "{'path':'" + filePath + "'}",
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                },
+                async: true
+
+            });
+        }
            
     </script>
     </head>
@@ -135,7 +150,7 @@
               <th>Type</th>
               <th></th>
                <th></th>
-               <th></th>
+          
 
           </tr>
       </thead>
