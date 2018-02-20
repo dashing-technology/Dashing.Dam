@@ -72,11 +72,13 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="image.png" />
     <Content Include="images\sort_asc.png" />
     <Content Include="images\sort_both.png" />
     <Content Include="jquery.nailthumb.less" />
     <Content Include="eWayUG.docx" />
     <None Include="packages.config" />
+    <Content Include="pdf.png" />
     <Content Include="TestProxy.aspx" />
     <Content Include="Training.pdf" />
     <Content Include="test.json" />

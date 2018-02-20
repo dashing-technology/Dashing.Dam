@@ -31,8 +31,6 @@
 
         return result;
     }
-
-   
     [WebMethod]
     public static string GetFiles(string folderPath)
     {
@@ -61,26 +59,27 @@
         }
         return result;
     }
-     [WebMethod]
-    public static string Delete(string folderPath)
+    [WebMethod]
+    public static string Delete(string path)
     {
-        if (folderPath.Trim().ToLower() == RootFolder.Trim().ToLower())
+        if (path.Trim().ToLower() == RootFolder.Trim().ToLower())
         {
             return "Can not delete roo folder: " + RootFolder;
         }
         var token = HttpContext.Current.Session["DbxToken"];
+        token = "lpGPoFMIcGAAAAAAAAAAEqsb7NxYp_GcmMt2ED09HFIoupHrdw9qMz1HJ0qoa7Id";
         string result = "";
         if (token != null)
         {
             try
             {
                 WebClient client = new WebClient();
-                string apiUrl = string.Format("Delete?token={0}&path={1}", token, folderPath);
+                string apiUrl = string.Format("Delete?token={0}&path={1}", token, path);
                 //client.Headers["Content-Type"] = "application/json";
                 client.Headers.Add("Accept:application/json");
                 var values = new NameValueCollection();
                 values.Add("token", token.ToString());
-                values.Add("path", folderPath);
+                values.Add("path", path);
                 client.UploadValues(BaseDamUrl + apiUrl, "DELETE",values);
                 result = "Success";
             }

@@ -12,8 +12,9 @@
         <title></title>
         <script type="text/javascript">
             var jsondata;
+            var folderPath = "/Red Rooster/Smitha";
             $(document).ready(function () {
-                var folderPath = "/Red Rooster/Smitha";
+                
                 getFiles();
                 //jsondata = [
                 //    {
@@ -43,7 +44,7 @@
 
                         success: function (data) {
                            
-                            console.log(data);
+                           
                             jsondata = JSON.parse(data.d);
                          
                         },
@@ -70,9 +71,15 @@
                                    
                                     "aTargets": [0],
                                     "bSortable": false,
-                                    "data":"thumbnail",
+                                    "data":"type",
                                     "mRender": function (data) {
-                                        return '<img src="data:image/jpeg;base64,'+data+'"/>';
+                                       
+                                        if (data == "pdf")
+                                            return '<img height="50px" width="50px" src="/pdf.png"/>';
+                                        else
+                                            return '<img height="50px" width="50px" src="/image.png"/>';
+
+                                      //return '<img src="data:image/jpeg;base64,'+data+'"/>';
                                     }
                                 },
                                 {
@@ -98,7 +105,7 @@
                                     "data": "name",
                                     
                                     "mRender": function (data) {
-                                        return '<a href="#" onclick="confirmationDelete(\'' +data+''\);">Del</a>';
+                                      return '<a href="#" onclick="confirmationDelete(\'' +data+'\')">Del</a>';
                                     }
                                 },
                                 
@@ -116,10 +123,10 @@
                                 ]
                         });
             }
-            function confirmationDelete(datas)
+            function confirmationDelete(data)
             {
-                alert(datas);
-                //if (confirm("Are you sure you want to delete this file?));
+                if (confirm("Are you sure you want to delete this file?"))
+                    deleteFile(folderPath + '/' + data);
             }
 
             function deleteFile(filePath) {
@@ -130,6 +137,7 @@
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
+                    //alert("success");
                 },
                 async: true
 

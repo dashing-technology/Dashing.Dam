@@ -162,8 +162,8 @@ namespace Dashing.Dam.Controllers
                             Size = Decimal.Round(Convert.ToDecimal((entry.AsFile.Size / 1024f) / 1024f),2),
                             Type = entry.Name.Substring(entry.Name.Length - 3),
                             Id = entry.AsFile.Id,
-                            FilePath = entry.AsFile.PathLower,
-                            Thumbnail= Convert.ToBase64String(dbx.Files.GetThumbnailAsync(folderPath+"/"+entry.Name, format.AsJpeg, size.AsW64h64).Result.GetContentAsByteArrayAsync().Result)
+                            FilePath = entry.AsFile.PathLower//,
+                            //Thumbnail= Convert.ToBase64String(dbx.Files.GetThumbnailAsync(folderPath+"/"+entry.Name, format.AsJpeg, size.AsW64h64).Result.GetContentAsByteArrayAsync().Result)
 
 
                 })
