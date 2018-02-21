@@ -185,5 +185,38 @@ namespace Dashing.Dam.Controllers
             return Ok(result);
         }
 
+        [HttpGet]
+        [Route("api/Dam/GetDownloadLink")]
+        public IHttpActionResult GetDownloadLink(string filePath, string token = "lpGPoFMIcGAAAAAAAAAAEqsb7NxYp_GcmMt2ED09HFIoupHrdw9qMz1HJ0qoa7Id")
+        {
+            using (var dbx = new DropboxClient(token))
+            {
+                var downloadLink = "";
+                try
+                {
+                    var response = dbx.Sharing.CreateSharedLinkWithSettingsAsync(filePath).Result;
+                    downloadLink = response.Url.Replace("dl=0", "dl=1");
+                }
+                catch (Exception e)
+                {
+                    try
+                    {
+                        var result = dbx.Sharing.ListSharedLinksAsync(filePath).Result;
+                        if (result?.Links?.Count > 0)
+                        {
+                            downloadLink = result.Links[0].Url.Replace("dl=0","dl=1");
+                        }
+                    }
+                    catch (Exception exception)
+                    {
+                        return BadRequest(exception.Message);
+                    }
+                }
+
+                return Ok(downloadLink);
+
+            }
+        }
+
     }
 }
