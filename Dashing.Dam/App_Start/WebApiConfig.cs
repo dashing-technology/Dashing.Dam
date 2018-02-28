@@ -29,6 +29,11 @@ namespace Dashing.Dam
                 TypeNameHandling = TypeNameHandling.None,
                 ContractResolver = new CamelCasePropertyNamesContractResolver()
             };
+
+            config.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling
+                = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+
+            //config.MessageHandlers.Add(new LogRequestAndResponseHandler());
         }
     }
 }

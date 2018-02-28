@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Caching;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 using Dropbox.Api;
 using Dropbox.Api.Files;
@@ -18,38 +19,24 @@ namespace Dashing.Dam.Controllers
 
         [HttpGet]
         public IHttpActionResult GetFolders(
-            string token = "lpGPoFMIcGAAAAAAAAAAEqsb7NxYp_GcmMt2ED09HFIoupHrdw9qMz1HJ0qoa7Id",
-            string rootFolderPath = "/Red Rooster")
+            string token,
+            string rootFolderPath)
         {
-
-            //var ca = db.tblTags;
-            //memCache.Add("tag", ca, DateTimeOffset.UtcNow.AddMinutes(5));
-            //return db.tblTags;
-            //var cachedFolders = MemoryCache.Default.Get(token + rootFolderPath);
-            //if (cachedFolders != null)
-            //{
-            //    return Ok((List<Folder>)cachedFolders);
-            //}
-            //else
-            //{
             var result = BuildFolderStructure(token, rootFolderPath);
-            //MemoryCache.Default.Add(token + rootFolderPath, folders, DateTimeOffset.UtcNow.AddHours(5));
             return Ok(result);
-            //}
-
         }
-        [HttpDelete]
+        [HttpGet]
+        [Route("api/Dam/Delete")]
         public IHttpActionResult Delete(
-            string token = "lpGPoFMIcGAAAAAAAAAAEqsb7NxYp_GcmMt2ED09HFIoupHrdw9qMz1HJ0qoa7Id",
-            string path = "/Red Rooster")
+            string token,
+            string path )
         {
-            DeleteResult result = null;
+            
             try
             {
                 using (var dbx = new DropboxClient(token))
                 {
-                    result = dbx.Files.DeleteV2Async(path).Result;
-
+                    DeleteResult result = dbx.Files.DeleteV2Async(path).Result;
                 }
 
                 return Ok();
@@ -58,16 +45,14 @@ namespace Dashing.Dam.Controllers
             {
                 return BadRequest(e.Message);
             }
-
         }
 
         [HttpPost]
         public IHttpActionResult RenameFolder(
-            string folderFrom, string folderTo, string token = "lpGPoFMIcGAAAAAAAAAAEqsb7NxYp_GcmMt2ED09HFIoupHrdw9qMz1HJ0qoa7Id")
+            string folderFrom, string folderTo, string token)
         {
             try
             {
-                //var ca = db.tblTags;
                 using (var dbx = new DropboxClient(token))
                 {
                     var result = dbx.Files.MoveV2Async(folderFrom, folderTo).Result;
@@ -83,11 +68,10 @@ namespace Dashing.Dam.Controllers
         [HttpPost]
         [Route("api/Dam/MoveFolder")]
         public IHttpActionResult MoveFolder(
-            string folderFrom, string folderTo, string token = "lpGPoFMIcGAAAAAAAAAAEqsb7NxYp_GcmMt2ED09HFIoupHrdw9qMz1HJ0qoa7Id")
+            string folderFrom, string folderTo, string token)
         {
             try
             {
-                //var ca = db.tblTags;
                 using (var dbx = new DropboxClient(token))
                 {
                     var result = dbx.Files.MoveV2Async(folderFrom, folderTo).Result;
@@ -104,11 +88,10 @@ namespace Dashing.Dam.Controllers
         [HttpPost]
         [Route("api/Dam/CreateFolder")]
         public IHttpActionResult CreateFolder(
-            string folderFullPath, string token = "lpGPoFMIcGAAAAAAAAAAEqsb7NxYp_GcmMt2ED09HFIoupHrdw9qMz1HJ0qoa7Id")
+            string folderFullPath, string token)
         {
             try
             {
-                //var ca = db.tblTags;
                 using (var dbx = new DropboxClient(token))
                 {
                    var result= dbx.Files.CreateFolderV2Async(folderFullPath).Result;
@@ -130,7 +113,6 @@ namespace Dashing.Dam.Controllers
             {
                 using (var dbx = new DropboxClient(token))
                 {
-                    //var test  = dbx.Files.ListFolderAsync(folderName,true).Result.Entries;
                     folders = dbx.Files.ListFolderAsync(folderName,true).Result.Entries
                         .Where(f=>f.IsFolder==true)
                         .Select(entry =>new Folder()
@@ -178,16 +160,17 @@ namespace Dashing.Dam.Controllers
 
         [HttpGet]
         [Route("api/Dam/GetFiles")]
-        public IHttpActionResult GetFiles(string token = "lpGPoFMIcGAAAAAAAAAAEqsb7NxYp_GcmMt2ED09HFIoupHrdw9qMz1HJ0qoa7Id",
-            string folderPath = "/Red Rooster/Smitha")
+        public IHttpActionResult GetFiles(string token,
+            string folderPath)
         {
             List<Models.File> result = GetFilesByFolder(token, folderPath);
             return Ok(result);
         }
+      
 
         [HttpGet]
         [Route("api/Dam/GetDownloadLink")]
-        public IHttpActionResult GetDownloadLink(string filePath, string token = "lpGPoFMIcGAAAAAAAAAAEqsb7NxYp_GcmMt2ED09HFIoupHrdw9qMz1HJ0qoa7Id")
+        public IHttpActionResult GetDownloadLink(string filePath, string token)
         {
             using (var dbx = new DropboxClient(token))
             {
@@ -215,6 +198,30 @@ namespace Dashing.Dam.Controllers
 
                 return Ok(downloadLink);
 
+            }
+        }
+
+        [HttpPost]
+        [Route("api/Dam/UploadFile")]
+        public async Task<IHttpActionResult> UploadFile(string fileName, string token)
+        {
+            var stream = HttpContext.Current.Request.InputStream;
+           
+            try
+            {
+                FileMetadata result = null;
+                using (var dbx = new DropboxClient(token))
+                {
+                    CommitInfo info = new CommitInfo(path: fileName) { };
+
+
+                    result = await dbx.Files.UploadAsync(info, stream);
+                }
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
             }
         }
 
