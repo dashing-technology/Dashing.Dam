@@ -82,6 +82,13 @@
     <Content Include="TestProxy.aspx" />
     <Content Include="Training.pdf" />
     <Content Include="test.json" />
+    <Content Include="uStore\drop-box-php\data\30mb-chunk.psb" />
+    <Content Include="uStore\drop-box-php\data\debug.log" />
+    <Content Include="uStore\drop-box-php\lib\dropbox\localfile.tmp" />
+    <Content Include="uStore\drop-box-php\web.config" />
+    <Content Include="uStore\FileUploadHandler.ashx" />
+    <Content Include="uStore\ThemedPage.Master" />
+    <Content Include="uStore\ThemedPageFullWidth.Master" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -100,6 +107,77 @@
     <Content Include="jquery.nailthumb.1.1.min.js" />
     <Content Include="red.jpg" />
     <Content Include="Test.html" />
+    <Content Include="uStore\client\continue.gif" />
+    <Content Include="uStore\client\edit.gif" />
+    <Content Include="uStore\client\fine-uploader-new.css" />
+    <Content Include="uStore\client\jquery.fine-uploader.js" />
+    <Content Include="uStore\client\loading.gif" />
+    <Content Include="uStore\client\pause.gif" />
+    <Content Include="uStore\client\processing.gif" />
+    <Content Include="uStore\client\retry.gif" />
+    <Content Include="uStore\client\trash.gif" />
+    <Content Include="uStore\DAMProxy.aspx" />
+    <Content Include="uStore\dist\jstree.js" />
+    <Content Include="uStore\dist\jstree.min.js" />
+    <Content Include="uStore\dist\themes\default-dark\32px.png" />
+    <Content Include="uStore\dist\themes\default-dark\40px.png" />
+    <Content Include="uStore\dist\themes\default-dark\style.css" />
+    <Content Include="uStore\dist\themes\default-dark\style.min.css" />
+    <Content Include="uStore\dist\themes\default-dark\throbber.gif" />
+    <Content Include="uStore\dist\themes\default\32px.png" />
+    <Content Include="uStore\dist\themes\default\40px.png" />
+    <Content Include="uStore\dist\themes\default\custom-style.css" />
+    <Content Include="uStore\dist\themes\default\style.css" />
+    <Content Include="uStore\dist\themes\default\style.min.css" />
+    <Content Include="uStore\dist\themes\default\throbber.gif" />
+    <Content Include="uStore\drop-box-php\addFolder.php" />
+    <Content Include="uStore\drop-box-php\authorize.php" />
+    <Content Include="uStore\drop-box-php\bootstrap.php" />
+    <Content Include="uStore\drop-box-php\css\jquery.dataTables.min.css" />
+    <Content Include="uStore\drop-box-php\data\auth-bak-2.php" />
+    <Content Include="uStore\drop-box-php\data\auth.bak.php" />
+    <Content Include="uStore\drop-box-php\data\auth.php" />
+    <Content Include="uStore\drop-box-php\download-stream.php" />
+    <Content Include="uStore\drop-box-php\download.php" />
+    <Content Include="uStore\drop-box-php\grid.html" />
+    <Content Include="uStore\drop-box-php\images\generic-document.jpg" />
+    <Content Include="uStore\drop-box-php\images\pdf-icon.jpg" />
+    <Content Include="uStore\drop-box-php\images\sort_asc.png" />
+    <Content Include="uStore\drop-box-php\images\sort_both.png" />
+    <Content Include="uStore\drop-box-php\images\spinner-white.gif" />
+    <Content Include="uStore\drop-box-php\index.php" />
+    <Content Include="uStore\drop-box-php\info.php" />
+    <Content Include="uStore\drop-box-php\js\jquery-1.11.3.min.js" />
+    <Content Include="uStore\drop-box-php\js\jquery.dataTables.min.js" />
+    <Content Include="uStore\drop-box-php\js\plupload.full.min.js" />
+    <Content Include="uStore\drop-box-php\lib\Config.php" />
+    <Content Include="uStore\drop-box-php\lib\dropbox\client.php" />
+    <Content Include="uStore\drop-box-php\lib\dropbox\rest.php" />
+    <Content Include="uStore\drop-box-php\lib\dropbox\session.php" />
+    <Content Include="uStore\drop-box-php\lib\SQLBroker.php" />
+    <Content Include="uStore\drop-box-php\lib\Util.php" />
+    <Content Include="uStore\drop-box-php\list.php" />
+    <Content Include="uStore\drop-box-php\Logs\Log.txt" />
+    <Content Include="uStore\drop-box-php\oauthmig.php" />
+    <Content Include="uStore\drop-box-php\preview.php" />
+    <Content Include="uStore\drop-box-php\removeFile.php" />
+    <Content Include="uStore\drop-box-php\renameFile.php" />
+    <Content Include="uStore\drop-box-php\search.php" />
+    <Content Include="uStore\drop-box-php\thumbnail.php" />
+    <Content Include="uStore\drop-box-php\upload %282%29.php" />
+    <Content Include="uStore\drop-box-php\upload-chunked.php" />
+    <Content Include="uStore\drop-box-php\upload-form-from-path-multi.php" />
+    <Content Include="uStore\drop-box-php\upload-form-from-path.php" />
+    <Content Include="uStore\drop-box-php\upload-form.php" />
+    <Content Include="uStore\drop-box-php\upload.php" />
+    <Content Include="uStore\drop-box-php\upload_new.php" />
+    <Content Include="uStore\HtmlPage1.html" />
+    <Content Include="uStore\jQueryDataTable\jquery-1.11.3.min.js" />
+    <Content Include="uStore\jQueryDataTable\jquery.dataTables.min.css" />
+    <Content Include="uStore\jQueryDataTable\jquery.dataTables.min.js" />
+    <Content Include="uStore\Loading_icon.gif" />
+    <Content Include="uStore\WebForm1.aspx" />
+    <Content Include="uStore\WebForm3.aspx" />
     <Content Include="Web.config" />
     <Content Include="WebForm1.aspx" />
   </ItemGroup>
@@ -119,6 +197,27 @@
     </Compile>
     <Compile Include="TestProxy.aspx.designer.cs">
       <DependentUpon>TestProxy.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="uStore\DAMProxy.aspx.cs">
+      <DependentUpon>DAMProxy.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="uStore\DAMProxy.aspx.designer.cs">
+      <DependentUpon>DAMProxy.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="uStore\WebForm1.aspx.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="uStore\WebForm1.aspx.designer.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="uStore\WebForm3.aspx.cs">
+      <DependentUpon>WebForm3.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="uStore\WebForm3.aspx.designer.cs">
+      <DependentUpon>WebForm3.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForm1.aspx.cs">
       <DependentUpon>WebForm1.aspx</DependentUpon>

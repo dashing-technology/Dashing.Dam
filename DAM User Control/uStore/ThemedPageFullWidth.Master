@@ -1,0 +1,102 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="ThemedPageFullWidth.master.cs" Inherits="uStore.PageLayout.ThemedPageFullWidth" %>
+<%@ Register TagPrefix="gldXmpExt2" TagName="EzyPayExt2" Src="/uStore/custom-headers/gld-ezypay-ext/gld-ezypay-control-v2.ascx" %>
+<%@ Register TagPrefix="uStore" TagName="MetaTags" Src="~/UControls/MetaTags.ascx" %>
+<%@ Register TagPrefix="uStore" TagName="WebEnhancerButton" Src="~/UControls/WebEnhancerButton.ascx" %>
+
+<!doctype html>
+<html>
+<head>
+    <uStore:MetaTags ID="MetaTags" runat="server" />
+    <link href="<%= DefaultStylePath %>" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="<%= StoreStyle %>" type="text/css" />
+    <link rel="stylesheet" href="<%= StoreStylePath %>RadSkins/Default/Grid.Default.css" type="text/css" />    
+    <link rel="stylesheet" href="<%= StoreStylePath %>RadSkins/Default/TreeView.Default.css" type="text/css" />    
+    <link rel="stylesheet" href="<%= StoreStylePath %>RadSkins/Default/Calendar.Default.css" type="text/css" /> 
+    <link rel="stylesheet" href="<%= StoreStylePath %>RadSkins/Default/Menu.Default.css" type="text/css" /> 
+    <link rel="stylesheet" href="<%= StorejQueryStyle %>" type="text/css" />
+    <asp:ContentPlaceHolder ID="cphHtmlHeader" runat="server"></asp:ContentPlaceHolder>
+    <title></title> 
+
+<script runat="server" language="c#">
+
+	
+    public bool IsCheckoutPage
+    {
+        get
+        {
+            if( Page.Request.FilePath.Contains("/uStore/CheckoutPaymentSubmission.aspx"))
+            {
+                return true;
+            }
+
+            return false;
+
+        }
+    }
+
+ private bool IsEWayClearing()
+    {
+        bool result = false;
+        string clearing = Request["ctl00$cphMainContent$ctlClearingUserData10011$txtCostCenter"];
+        if (clearing.Contains("eWay"))
+        {
+            result = true;
+        }
+
+        return result;
+    }
+</script>
+
+</head>
+<body>
+    <asp:PlaceHolder ID="plhWaitingDiv" runat="server"></asp:PlaceHolder>
+    <script type="text/javascript" src="<%= ScriptsPath %>" ></script>
+    <form id="form1" runat="server">
+        <asp:ScriptManager ID="scriptManager" runat="server" EnablePageMethods="true"></asp:ScriptManager>
+		<uStore:WebEnhancerButton ID="WebEnhancerButton" runat="server"/>
+		<div id="fullpage" class="ThemedPagedFullWidthMaster">
+			
+			<div id="logo"></div>
+
+            <asp:ContentPlaceHolder ID="cphStandardHeader" runat="server"></asp:ContentPlaceHolder>
+
+            <asp:ContentPlaceHolder ID="cphWelcome" runat="server"></asp:ContentPlaceHolder>
+                            
+            <asp:ContentPlaceHolder ID="cphFlags" runat="server"></asp:ContentPlaceHolder>
+
+            <asp:ContentPlaceHolder ID="cphCurrency" runat="server"></asp:ContentPlaceHolder>
+
+            <asp:ContentPlaceHolder ID="cphCustomHeader" runat="server"></asp:ContentPlaceHolder>
+
+            <div id="searcharea">
+                <div id="containerPageProductName" class="subtitleProductName" runat="server" visible="true"><%= TitleProductName%></div>
+                <div id="containerPageSubTitle" class="subtitle"  runat="server"><%= PageSubTitle %></div>
+                <asp:ContentPlaceHolder ID="cphProductSearch" runat="server"></asp:ContentPlaceHolder>                    
+            </div>
+
+            <div class="mainareaFullWidth">
+                <asp:ContentPlaceHolder ID="cphMainContent" runat="server"></asp:ContentPlaceHolder>
+            </div>
+
+            <div class="mainAreaFooterFullWidth">		
+		
+                <asp:ContentPlaceHolder ID="cphMainContentFooter" runat="server"></asp:ContentPlaceHolder>
+            </div>
+            
+            <!-- Footer Area Start -->            
+            <div id="masterPageFooter" class="clearfloat"></div>            
+            <asp:ContentPlaceHolder ID="cphCustomFooter" runat="server"></asp:ContentPlaceHolder>            
+            <div id="postFooter"></div>
+        </div>
+    </form> 
+
+<gldXmpExt2:EzyPayExt2 runat="server" ClearingName="Eezy Pay Test" SandboxMode="true" />
+   <script>
+
+    $(document).ready(function () {
+
+        $("#NavigationHeader ul").append('<li id="DAM" class="menuButton cartButton color"><a href="/uStore/Home?DAM=true">DAM</a></li>');
+});
+</script>
+</body>
+</html>

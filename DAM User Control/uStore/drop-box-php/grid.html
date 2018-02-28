@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Dropbox grid</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="css/jquery.dataTables.min.css">
+        <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+        <script type="text/javascript" src="js/jquery.dataTables.min.js?v=1.1"></script>
+        <script>
+            $(document).ready(function(){
+                $('#listGrid').DataTable( {
+                    "ajax": "http://glmcampaign.com.au/drop-box-php/list.php?path=/Green%20Lips%20Shared%20Files/ACU/Skin&filesOnly=1&downloadFiles=1",
+                    "columns": [
+                        { "data": "path" },
+                        { "data": "mime_type" },
+                        { "data": "modified" }
+                    ]
+                } );
+            });
+        </script>
+        <style>
+            body,div,p,td,th
+            {
+                font-family: sans-serif;
+            }
+			
+			#listGrid_filter
+			{
+				display:none;
+			}
+        </style>
+    </head>
+    <body>
+        <div>
+            <h2>Downloads</h2>
+            <table id="listGrid">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Kind</th>
+                        <th>Modified</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{Name}</td>
+                        <td>{Kind}</td>
+                        <td>{Modified}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>
