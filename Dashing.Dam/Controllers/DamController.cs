@@ -75,7 +75,6 @@ namespace Dashing.Dam.Controllers
                 using (var dbx = new DropboxClient(token))
                 {
                     var result = dbx.Files.MoveV2Async(folderFrom, folderTo).Result;
-
                 }
                 return Ok();
             }
@@ -113,6 +112,7 @@ namespace Dashing.Dam.Controllers
             {
                 using (var dbx = new DropboxClient(token))
                 {
+                    //var test  = dbx.Files.ListFolderAsync(folderName,true).Result.Entries;
                     folders = dbx.Files.ListFolderAsync(folderName,true).Result.Entries
                         .Where(f=>f.IsFolder==true)
                         .Select(entry =>new Folder()
@@ -141,14 +141,14 @@ namespace Dashing.Dam.Controllers
                         .Select(entry => new Models.File()
                         {
                             Name = entry.Name,
-                            Size = Decimal.Round(Convert.ToDecimal((entry.AsFile.Size / 1024f) / 1024f),2),
-                            Type = entry.Name.Substring(entry.Name.Length - 3),
+                            Size = Decimal.Round(Convert.ToDecimal((entry.AsFile.Size / 1024f) / 1024f), 4),
+                            Type = entry.Name.Substring(entry.Name.LastIndexOf('.')).ToLower(),
                             Id = entry.AsFile.Id,
-                            FilePath = entry.AsFile.PathLower//,
+                            FilePath = entry.AsFile.PathLower
                             //Thumbnail= Convert.ToBase64String(dbx.Files.GetThumbnailAsync(folderPath+"/"+entry.Name, format.AsJpeg, size.AsW64h64).Result.GetContentAsByteArrayAsync().Result)
 
 
-                })
+                        })
                 .ToList();
                
 

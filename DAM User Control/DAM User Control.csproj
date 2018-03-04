@@ -72,16 +72,8 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="image.png" />
     <Content Include="images\sort_asc.png" />
     <Content Include="images\sort_both.png" />
-    <Content Include="jquery.nailthumb.less" />
-    <Content Include="eWayUG.docx" />
-    <None Include="packages.config" />
-    <Content Include="pdf.png" />
-    <Content Include="TestProxy.aspx" />
-    <Content Include="Training.pdf" />
-    <Content Include="test.json" />
     <Content Include="uStore\drop-box-php\data\30mb-chunk.psb" />
     <Content Include="uStore\drop-box-php\data\debug.log" />
     <Content Include="uStore\drop-box-php\lib\dropbox\localfile.tmp" />
@@ -97,16 +89,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DAMFilesList.ascx" />
-    <Content Include="jquery-1.11.3.min.js" />
-    <Content Include="jquery.dataTables.min.css" />
-    <Content Include="jquery.dataTables.min.js" />
-    <Content Include="jquery.nailthumb.1.1.css" />
-    <Content Include="jquery.nailthumb.1.1.js" />
-    <Content Include="jquery.nailthumb.1.1.min.css" />
-    <Content Include="jquery.nailthumb.1.1.min.js" />
-    <Content Include="red.jpg" />
-    <Content Include="Test.html" />
     <Content Include="uStore\client\continue.gif" />
     <Content Include="uStore\client\edit.gif" />
     <Content Include="uStore\client\fine-uploader-new.css" />
@@ -179,25 +161,9 @@
     <Content Include="uStore\WebForm1.aspx" />
     <Content Include="uStore\WebForm3.aspx" />
     <Content Include="Web.config" />
-    <Content Include="WebForm1.aspx" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DAMFilesList.ascx.cs">
-      <DependentUpon>DAMFilesList.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DAMFilesList.ascx.designer.cs">
-      <DependentUpon>DAMFilesList.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DropboxFiles.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestProxy.aspx.cs">
-      <DependentUpon>TestProxy.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="TestProxy.aspx.designer.cs">
-      <DependentUpon>TestProxy.aspx</DependentUpon>
-    </Compile>
     <Compile Include="uStore\DAMProxy.aspx.cs">
       <DependentUpon>DAMProxy.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -218,13 +184,6 @@
     </Compile>
     <Compile Include="uStore\WebForm3.aspx.designer.cs">
       <DependentUpon>WebForm3.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="WebForm1.aspx.cs">
-      <DependentUpon>WebForm1.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="WebForm1.aspx.designer.cs">
-      <DependentUpon>WebForm1.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <PropertyGroup>
