@@ -29,11 +29,11 @@ public class FileUploadHandler : IHttpHandler
                     client.UploadData(apiUrl, fileData);
                 }
                 context.Response.ContentType = "text/plain";
-                context.Response.Write("File(s) Uploaded Successfully!");
+                context.Response.Write("No exception!!! File(s) Uploaded Successfully!");
             }
             catch (Exception e)
             {
-                context.Response.Write(e.Message);
+                context.Response.Write("Error file upload" + e.Message);
             }
 
         }
