@@ -205,7 +205,17 @@ namespace Dashing.Dam.Controllers
         [Route("api/Dam/UploadFile")]
         public async Task<IHttpActionResult> UploadFile(string fileName, string token)
         {
-            var stream = HttpContext.Current.Request.InputStream;
+            Stream stream = null;
+            try
+            {
+                stream = HttpContext.Current.Request.InputStream;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                
+            }
+            
            
             try
             {
