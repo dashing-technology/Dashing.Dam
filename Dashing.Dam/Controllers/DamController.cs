@@ -113,12 +113,12 @@ namespace Dashing.Dam.Controllers
                 using (var dbx = new DropboxClient(token))
                 {
                     //var test  = dbx.Files.ListFolderAsync(folderName,true).Result.Entries;
-                    folders = dbx.Files.ListFolderAsync(folderName,true).Result.Entries
-                        .Where(f=>f.IsFolder==true)
-                        .Select(entry =>new Folder()
+                   var temp = dbx.Files.ListFolderAsync(folderName,true).Result.Entries
+                        .Where(f=>f.IsFolder==true);
+                        folders = temp .Select(entry =>new Folder()
                             {
                                 Id = entry.PathLower,
-                                Parent = Path.GetDirectoryName(entry.PathLower)==@"\"?"#": Path.GetDirectoryName(entry.PathLower).Replace(@"\","/"),
+                                Parent =entry.PathLower==folderName.ToLower()?"#": Path.GetDirectoryName(entry.PathLower).Replace(@"\","/"),
                                 Text = entry.AsFolder.Name
                             })
                         .ToList();
