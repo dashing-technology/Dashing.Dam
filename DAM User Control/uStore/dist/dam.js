@@ -2,7 +2,7 @@
 var currentlyLodedFolder = "";
 var storeStylePath = "";
 var isAdminUser = false;
-function InitializeDam(isAdmin, jsondata, stylePath) {
+function InitializeDam(isAdmin, jsondata, stylePath,rootFolder) {
     //$("#NavigationHeader ul").append('<li id="DAM" class="menuButton cartButton color"><a href="/uStore/Home?DAM=true">DAM</a></li>');
     storeStylePath = stylePath;
     isAdminUser = isAdmin;
@@ -44,7 +44,11 @@ function InitializeDam(isAdmin, jsondata, stylePath) {
         }
     }).on("state_ready.jstree", function (e, data) {
 
-    });
+    }).on('loaded.jstree',function(e, data){
+			
+			$('#jstree').jstree('open_all');
+  });
+
 
     var tree = $('#jstree').jstree(true);
     function context_menu(node) {
@@ -81,7 +85,7 @@ function InitializeDam(isAdmin, jsondata, stylePath) {
                     })
                         .then((willDelete) => {
                             if (willDelete) {
-                                deleteAsset(node.original.id);
+                                deleteAsset(node.id);
                                 currentlyLodedFolder = node.parent;
                                 tree.delete_node(node);
                                 $('#jstree').jstree('select_node', currentlyLodedFolder);
@@ -100,7 +104,7 @@ function InitializeDam(isAdmin, jsondata, stylePath) {
             delete items.Create;
         }
         else {
-            if (node.id == '/red rooster') {
+            if (node.id == rootFolder) {
                 delete items.Delete;
                 delete items.Rename;
             }
@@ -347,7 +351,7 @@ function upload(evt) {
     }
 
     var options = {};
-    options.url = storeStylePath + "/FileUploadHandler.ashx?folderPath=" + currentlyLodedFolder;
+    options.url = storeStylePath + "/FileUploadHandler.ashx?folderPath=" + escape(currentlyLodedFolder);
     options.type = "POST";
     options.data = data;
     options.contentType = false;
@@ -358,14 +362,22 @@ function upload(evt) {
     $.ajax(options);
 
 }
-function updateImageDisplay() {
-    $("#filePreviewTable tr").remove();
+function updateImageDisplay() 
+{
+	  $(".ui-dialog-buttonpane button:contains('Upload')").button("enable");
+    if ($("#msgPara").length > 0)
+        $("#msgPara").remove();
+    if ($("#msgFileExists").length > 0)
+        $("#msgFileExists").remove();
+
+    $("#filePreviewTable tr").next('tr').remove();
     var input = $("#image_uploads").get(0);
     var preview = $("#preview");
 
     var table = $('#filePreviewTable');
-    //var filePreviewTable = $('#filePreviewTable');
+
     var curFiles = input.files;
+    var existingFiles="";
     //while (filePreviewTable.firstChild) {
 
     //    filePreviewTable.removeChild(filePreviewTable.firstChild);
@@ -373,45 +385,64 @@ function updateImageDisplay() {
     if (curFiles.length === 0) {
 
         var para = document.createElement('p');
+        para.setAttribute("id", "msgPara");
         para.textContent = 'No files currently selected for upload';
         preview.append(para);
+        $(".ui-dialog-buttonpane button:contains('Upload')").button("disable");
     }
     else {
 
         for (var i = 0; i < curFiles.length; i++) {
-            //if (validFileSize(curFiles[i].size)) {
-            var imgSrc = storeStylePath + "/Images/image.png";
 
-            switch (curFiles[i].type) {
+            if (!jsonFilesdata.some(item => item.name === curFiles[i].name))
+            {
+                var imgSrc = storeStylePath + "/Images/image.png";
 
-                case 'application/pdf':
-                    imgSrc = storeStylePath + "/Images/pdf.png";
-                    break;
-                case 'application/msword':
-                case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
-                    imgSrc = storeStylePath + "/Images/docx.png";
-                    break;
-                
-                   
+                switch (curFiles[i].type) {
 
-                case 'text/plain':
-                    imgSrc = storeStylePath + "/Images/txt.png";
-                    break;
-                case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
-                    imgSrc = storeStylePath + "/Images/excel.png";
-                    break;
-                default:
-                    imgSrc = window.URL.createObjectURL(curFiles[i]);
-                    break;
+                    case 'application/pdf':
+                        imgSrc = storeStylePath + "/Images/pdf.png";
+                        break;
+                    case 'application/msword':
+                    case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+                        imgSrc = storeStylePath + "/Images/docx.png";
+                        break;
+                    case 'text/plain':
+                        imgSrc = storeStylePath + "/Images/txt.png";
+                        break;
+                    case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+                        imgSrc = storeStylePath + "/Images/excel.png";
+                        break;
+                    case 'image/jpeg':
+                    case 'image/pjpeg':
+                    case 'image/png':
+                        imgSrc = window.URL.createObjectURL(curFiles[i]);
+                        break;
+                    default:
+                        imgSrc = storeStylePath + "/Images/image.png";
+                        break;
 
 
+                }
+
+                table.append('<tr><td><img src="' + imgSrc + '" height="80px" width="80px" align="center"/></td><td>' + curFiles[i].name + '</td><td>' + returnFileSize(curFiles[i].size) + '</td></tr>');
+            }
+        else
+            {
+                existingFiles=existingFiles+", "+curFiles[i].name;
             }
 
+        }
+        if (existingFiles != "") {
+            var paraMsg = document.createElement("p");
+            paraMsg.setAttribute("id", "msgFileExists");
+            //para.setAttribute("text","No files currently selected for upload");
+            paraMsg.textContent = "The file " + existingFiles + " already exists and will not be uploaded";
+            preview.append(paraMsg);
+		
+            if($("#filePreviewTable tr").next('tr').length===0)
+                $(".ui-dialog-buttonpane button:contains('Upload')").button("disable");
 
-
-
-            table.append('<tr><td><img src="' + imgSrc + '" height="80px" width="80px" align="center"/></td><td>' + curFiles[i].name + '</td><td>' + returnFileSize(curFiles[i].size) + '</td></tr>');
-            // }
         }
     }
 
@@ -446,8 +477,8 @@ function openPopup() {
                 text: "Upload",
                 click: function () {
                     upload();
-
-                    $("#filePreviewTable tr").remove();
+					$("#filePreviewTable tr").next('tr').remove();
+					$("#preview p").remove();
                     $("#divpreview").dialog("close");
 
                 }
@@ -458,3 +489,7 @@ function openPopup() {
     });
     return false;
 }
+
+
+
+

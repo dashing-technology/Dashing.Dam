@@ -11,7 +11,7 @@
     //static string BaseDamUrl = @"http://localhost:60201/api/Dam/";
     //To make this more secure move the token setting to a session variable in the master page
 
-    static string RootFolder = "/Red Rooster";
+    static string RootFolder = "/Green Lips Shared Files/DAM/Red Rooster";
     [WebMethod]
     public static string GetFolderTree()
     {
@@ -43,6 +43,7 @@
         {
             return "Can not delete root folder: " + RootFolder;
         }
+		path=HttpUtility.UrlEncode(path);
         var token = HttpContext.Current.Session["DbxToken"];
         string result = "";
         if (token != null)
@@ -73,6 +74,8 @@
         {
             return "Can not delete roo folder: " + RootFolder;
         }
+		folderFrom=HttpUtility.UrlEncode(folderFrom);
+		folderTo=HttpUtility.UrlEncode(folderTo);
         var token = HttpContext.Current.Session["DbxToken"];
         string result = "";
         if (token != null)
@@ -124,6 +127,7 @@
     public static string GetFiles(string folderPath)
     {
         var token = HttpContext.Current.Session["DbxToken"];
+		folderPath = HttpUtility.UrlEncode(folderPath);
         string result = "";
         if (token != null)
         {
